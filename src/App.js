@@ -14,6 +14,7 @@ import Dropdown from './components/dropdown';
 import Table from './components/table';
 
 import './index.scss';
+import StarWarsLogo from './assets/logo.png';
 
 const App = props => {
   const [state, dispatch] = useFilmsData(props);
@@ -40,19 +41,27 @@ const App = props => {
         <div className="mb4 mt5 w-75">
           <MovieList films={films} onFilmChange={onFilmChange} />
         </div>
-        {selectedFilm && <OpeningCrawl text={selectedFilm.opening_crawl} />}
-        {filmCharacters.data.length > 0 && (
-          <div className="mb4 mt4 w-75">
-            <Dropdown
-              options={filmCharacters.genders}
-              onChange={e => onGenderChange(e.target.value)}
-            />
-            <Table
-              rows={filmCharacters.data}
-              sortHeader={sortHeader}
-              columns={columns}
-              footerMsg={footerMsg}
-            />
+        {selectedFilm ? (
+          <div className="w-75">
+            <OpeningCrawl text={selectedFilm.opening_crawl} />
+            {filmCharacters.data.length > 0 && (
+              <div className="mb4 mt4 w-100">
+                <Dropdown
+                  options={filmCharacters.genders}
+                  onChange={e => onGenderChange(e.target.value)}
+                />
+                <Table
+                  rows={filmCharacters.data}
+                  sortHeader={sortHeader}
+                  columns={columns}
+                  footerMsg={footerMsg}
+                />
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="w-75">
+            <img src={StarWarsLogo} alt="StarWars" />
           </div>
         )}
       </div>
