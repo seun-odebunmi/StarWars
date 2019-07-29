@@ -21,7 +21,7 @@ export const initialState = {
 };
 
 export const reducer = (state, { type, payload }) => {
-  // console.log(state, action);
+  // console.log(state, payload, type);
   switch (type) {
     case GET_FILMS:
       return { ...state, films: payload };

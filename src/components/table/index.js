@@ -6,7 +6,7 @@ import Body from './body';
 import Footer from './footer';
 
 const Table = ({ rows, sortHeader, columns, footerMsg }) => (
-  <div className="pt3 overflow-auto">
+  <div className="h5 overflow-auto">
     <table className="collapse ba br2 b--black-10 pv2 ph3 w-100">
       <Header cols={columns} sortHeader={sortHeader} />
       <Body cols={columns} rows={rows} />

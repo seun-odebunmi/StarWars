@@ -9,7 +9,7 @@ const Header = ({ cols, sortHeader }) => (
           <th
             key={index}
             onClick={e => sortHeader(column)}
-            className="fw6 bb b--black-20 tl pv2 ph3 bg-white pointer"
+            className="fw6 bb b--black-20 tl pv2 ph3 bg-white pointer ttu"
           >
             {column}
           </th>

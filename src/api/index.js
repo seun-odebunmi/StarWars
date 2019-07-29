@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 import { BASE_URL } from '../constants/';
 
@@ -29,15 +30,16 @@ const handleError = error => {
     console.log(error.response.status);
     console.log(error.response.headers);
 
-    return error.response.message;
+    return toast.error(error.response.message);
   } else if (error.request) {
     console.log(error.request);
+    const errMsg = 'No response from server';
 
-    return 'No response from server';
+    return toast.error(errMsg);
   } else {
     console.log('Error', error.message);
 
-    return error.message;
+    return toast.error(error.message);
   }
 };
 

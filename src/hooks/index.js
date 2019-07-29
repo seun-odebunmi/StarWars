@@ -1,6 +1,7 @@
 import { useEffect, useReducer } from 'react';
 
 import { getFilmsApi, getFilmCharsApi } from '../api/film';
+import { handleError } from '../api/';
 import { getFilms, getFilmChars } from './actions';
 import { initialState, reducer } from './reducers';
 
@@ -8,9 +9,11 @@ const useFilmsData = props => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    getFilmsApi().then(res => {
-      dispatch(getFilms(res.data.results));
-    });
+    getFilmsApi()
+      .then(res => {
+        dispatch(getFilms(res.data.results));
+      })
+      .catch(err => handleError(err));
   }, [props]);
 
   return [state, dispatch];
@@ -23,9 +26,11 @@ const useFilmCharacters = (props, state, dispatch) => {
         state.selectedFilm.characters.map(url =>
           getFilmCharsApi(url).then(res => res.data)
         )
-      ).then(chars => {
-        dispatch(getFilmChars(chars));
-      });
+      )
+        .then(chars => {
+          dispatch(getFilmChars(chars));
+        })
+        .catch(err => handleError(err));
     }
   }, [state.selectedFilm, props, dispatch]);
 
