@@ -12,13 +12,14 @@ import MovieList from './components/movieList';
 import OpeningCrawl from './components/openingCrawl';
 import Dropdown from './components/dropdown';
 import Table from './components/table';
+import LoaderIcon from './components/loader';
 
 import StarWarsLogo from './assets/logo.png';
 
 const App = props => {
   const [state, dispatch] = useFilmsData(props);
   useFilmCharacters(props, state, dispatch);
-  const { films, selectedFilm, filmCharacters } = state;
+  const { films, isLoading, selectedFilm, filmCharacters } = state;
 
   const columns = ['name', 'gender', 'height'];
   const footerMsg = [
@@ -35,37 +36,46 @@ const App = props => {
   return (
     <div className="w-100 min-vh-100 flex justify-center">
       <div className="App fl w-75 flex flex-column items-center">
-        {films.length > 0 ? (
-          <Fragment>
-            <div className="mb4 mt5 w-75">
-              <MovieList films={films} onFilmChange={onFilmChange} />
-            </div>
-            {selectedFilm && (
-              <div className="w-75">
-                <OpeningCrawl text={selectedFilm.opening_crawl} />
-                {filmCharacters.data.length > 0 && (
-                  <div className="mb4 mt4 w-100">
-                    <label className="white b db w-100 mb2">Gender</label>
-                    <Dropdown
-                      options={filmCharacters.genders}
-                      className="mb3"
-                      onChange={e => onGenderChange(e.target.value)}
-                    />
-                    <Table
-                      rows={filmCharacters.data}
-                      sortHeader={sortHeader}
-                      columns={columns}
-                      footerMsg={footerMsg}
-                    />
-                  </div>
-                )}
-              </div>
-            )}
-          </Fragment>
-        ) : (
+        {films.length < 1 && (
           <div className="w-75">
             <img src={StarWarsLogo} alt="StarWars" />
           </div>
+        )}
+        {!isLoading ? (
+          films.length > 0 && (
+            <Fragment>
+              <div className="mb4 mt5 w-75">
+                <MovieList films={films} onFilmChange={onFilmChange} />
+              </div>
+              {selectedFilm && (
+                <div className="w-75 flex flex-column items-center">
+                  <OpeningCrawl text={selectedFilm.opening_crawl} />
+                  {!filmCharacters.isLoading ? (
+                    filmCharacters.data.length > 0 && (
+                      <div className="mb4 mt4 w-100">
+                        <label className="white b db w-100 mb2">Gender</label>
+                        <Dropdown
+                          options={filmCharacters.genders}
+                          className="mb3"
+                          onChange={e => onGenderChange(e.target.value)}
+                        />
+                        <Table
+                          rows={filmCharacters.data}
+                          sortHeader={sortHeader}
+                          columns={columns}
+                          footerMsg={footerMsg}
+                        />
+                      </div>
+                    )
+                  ) : (
+                    <LoaderIcon />
+                  )}
+                </div>
+              )}
+            </Fragment>
+          )
+        ) : (
+          <LoaderIcon />
         )}
       </div>
     </div>

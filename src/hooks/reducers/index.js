@@ -1,15 +1,19 @@
 import {
   GET_FILMS,
+  GET_FILMS_LOADING,
   SELECT_FILM,
   GET_FILM_CHARS,
+  GET_FILM_CHARS_LOADING,
   SORT_FILM_CHARS,
   FILTER_FILM_CHARS_BY_GENDER
 } from '../actions/types';
 
 export const initialState = {
   films: [],
+  isLoading: false,
   selectedFilm: null,
   filmCharacters: {
+    isLoading: false,
     initData: [],
     data: [],
     genders: [],
@@ -24,7 +28,9 @@ export const reducer = (state, { type, payload }) => {
   // console.log(state, payload, type);
   switch (type) {
     case GET_FILMS:
-      return { ...state, films: payload };
+      return { ...state, films: payload, isLoading: false };
+    case GET_FILMS_LOADING:
+      return { ...state, isLoading: payload };
     case SELECT_FILM: {
       const selectedFilm = state.films.filter(
         ({ episode_id }) => episode_id === payload
@@ -38,7 +44,16 @@ export const reducer = (state, { type, payload }) => {
         filmCharacters: {
           ...state.filmCharacters,
           ...payload,
-          initData: payload.data
+          initData: payload.data,
+          isLoading: false
+        }
+      };
+    case GET_FILM_CHARS_LOADING:
+      return {
+        ...state,
+        filmCharacters: {
+          ...state.filmCharacters,
+          isLoading: payload
         }
       };
     case SORT_FILM_CHARS: {
@@ -76,6 +91,6 @@ export const reducer = (state, { type, payload }) => {
       };
     }
     default:
-      throw new Error();
+      return { ...state };
   }
 };

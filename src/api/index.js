@@ -11,19 +11,6 @@ const fetchService = axios.create({
   }
 });
 
-fetchService.interceptors.request.use(
-  config => {
-    console.log('requesting.....');
-    return config;
-  },
-  error => Promise.reject(error)
-);
-
-fetchService.interceptors.response.use(
-  response => response,
-  error => Promise.reject(error)
-);
-
 const handleError = error => {
   if (error.response) {
     console.log(error.response.data);

@@ -1,7 +1,9 @@
 import {
   GET_FILMS,
+  GET_FILMS_LOADING,
   SELECT_FILM,
   GET_FILM_CHARS,
+  GET_FILM_CHARS_LOADING,
   SORT_FILM_CHARS,
   FILTER_FILM_CHARS_BY_GENDER
 } from './types';
@@ -9,6 +11,11 @@ import {
 export const getFilms = data => ({
   type: GET_FILMS,
   payload: data.sort((a, b) => a.release_date.localeCompare(b.release_date))
+});
+
+export const getFilmsLoading = status => ({
+  type: GET_FILMS_LOADING,
+  payload: status
 });
 
 export const selectFilm = id => ({ type: SELECT_FILM, payload: id });
@@ -31,6 +38,11 @@ export const getFilmChars = data => ({
       0
     )
   }
+});
+
+export const getFilmCharsLoading = status => ({
+  type: GET_FILM_CHARS_LOADING,
+  payload: status
 });
 
 export const sortFilmChars = header => ({
