@@ -1,22 +1,10 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import Columns from './columns';
-
-const Rows = ({ rows, cols }) => (
-  <Fragment>
-    {rows.map((row, index) => (
-      <tr key={index}>
-        {!!cols.length &&
-          cols.map((col, index) => <Columns key={index} col={col} row={row} />)}
-      </tr>
-    ))}
-  </Fragment>
-);
+const Rows = ({ children }) => <tr>{children}</tr>;
 
 Rows.propTypes = {
-  cols: PropTypes.array.isRequired,
-  rows: PropTypes.array.isRequired
+  children: PropTypes.node.isRequired
 };
 
 export default Rows;

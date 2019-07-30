@@ -1,26 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Footer = ({ cols, msg = [] }) => (
+import Rows from './body/rows';
+import Columns from './body/columns';
+
+const Footer = ({ total, colSpan }) => (
   <tfoot>
-    {msg.map((note, index) => (
-      <tr key={index}>
-        {!!cols.length && (
-          <td
-            colSpan={cols.length}
-            className="fw6 bb b--black-20 tl pv2 ph3 bg-white"
-          >
-            {note}
-          </td>
-        )}
-      </tr>
-    ))}
+    <Rows>
+      <Columns colSpan={colSpan}>{`Total Number of Characters: ${
+        total.chars
+      }`}</Columns>
+    </Rows>
+    <Rows>
+      <Columns colSpan={colSpan}>{`Sum of Character Heights: ${
+        total.height
+      }`}</Columns>
+    </Rows>
   </tfoot>
 );
 
 Footer.propTypes = {
-  msg: PropTypes.array,
-  cols: PropTypes.array.isRequired
+  total: PropTypes.shape({
+    chars: PropTypes.number.isRequired,
+    height: PropTypes.string.isRequired
+  }).isRequired,
+  colSpan: PropTypes.number.isRequired
 };
 
 export default Footer;

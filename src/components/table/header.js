@@ -1,25 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Header = ({ cols, sortHeader }) => (
+import Rows from './body/rows';
+
+const Header = ({ columns, sortHeader }) => (
   <thead>
-    <tr>
-      {!!cols.length &&
-        cols.map((column, index) => (
-          <th
-            key={index}
-            onClick={e => sortHeader(column)}
-            className="fw6 bb b--black-20 tl pv2 ph3 bg-white pointer ttu"
-          >
-            {column}
-          </th>
-        ))}
-    </tr>
+    <Rows>
+      {columns.map((column, index) => (
+        <th key={index} onClick={e => sortHeader(column)}>
+          {column}
+        </th>
+      ))}
+    </Rows>
   </thead>
 );
 
 Header.propTypes = {
-  cols: PropTypes.array.isRequired,
+  columns: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   sortHeader: PropTypes.func.isRequired
 };
 

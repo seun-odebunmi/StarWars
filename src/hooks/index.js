@@ -2,26 +2,32 @@ import { useEffect, useReducer } from 'react';
 
 import { getFilmsApi, getFilmCharsApi } from '../api/film';
 import { handleError } from '../api/';
-import {
-  getFilms,
-  getFilmChars,
-  getFilmCharsLoading,
-  getFilmsLoading
-} from './actions';
+import { getFilms, getFilmChars, isLoading } from './actions';
 import { initialState, reducer } from './reducers';
 
 const useFilmsData = props => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    dispatch(getFilmsLoading(true));
+    dispatch(isLoading(true));
 
     getFilmsApi()
+      .then(res =>
+        res.data.results.map(film => ({
+          ...film,
+          characters: Promise.all(
+            film.characters.map(url =>
+              getFilmCharsApi(url).then(res => res.data)
+            )
+          )
+        }))
+      )
       .then(res => {
-        dispatch(getFilms(res.data.results));
+        dispatch(isLoading(false));
+        dispatch(getFilms(res));
       })
       .catch(err => {
-        dispatch(getFilmsLoading(false));
+        dispatch(isLoading(false));
         handleError(err);
       });
   }, [props]);
@@ -32,18 +38,15 @@ const useFilmsData = props => {
 const useFilmCharacters = (props, state, dispatch) => {
   useEffect(() => {
     if (state.selectedFilm) {
-      dispatch(getFilmCharsLoading(true));
+      dispatch(isLoading(true));
 
-      Promise.all(
-        state.selectedFilm.characters.map(url =>
-          getFilmCharsApi(url).then(res => res.data)
-        )
-      )
+      state.selectedFilm.characters
         .then(chars => {
+          dispatch(isLoading(false));
           dispatch(getFilmChars(chars));
         })
         .catch(err => {
-          dispatch(getFilmCharsLoading(false));
+          dispatch(isLoading(false));
           handleError(err);
         });
     }

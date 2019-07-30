@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Dropdown = ({ options, onChange, className = '' }) => (
-  <select onChange={onChange} className={`ba b--white w-100 pa1 ${className}`}>
+import './dropdown.scss';
+
+const Dropdown = ({ options, onChange }) => (
+  <select onChange={onChange}>
     <option value="">-- Select --</option>
     {options.map(({ name, value }, index) => (
       <option key={index} value={value}>
@@ -13,8 +15,12 @@ const Dropdown = ({ options, onChange, className = '' }) => (
 );
 
 Dropdown.propTypes = {
-  options: PropTypes.array.isRequired,
-  className: PropTypes.string,
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    })
+  ).isRequired,
   onChange: PropTypes.func
 };
 
