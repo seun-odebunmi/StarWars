@@ -49,6 +49,8 @@ const useFilmCharacters = (props, state, dispatch) => {
           dispatch(isLoading(false));
           handleError(err);
         });
+    } else {
+      dispatch(getFilmChars([]));
     }
   }, [state.selectedFilm, props, dispatch]);
 
