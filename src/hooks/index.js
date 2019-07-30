@@ -1,4 +1,5 @@
 import { useEffect, useReducer } from 'react';
+import { toast } from 'react-toastify';
 
 import { getFilmsApi, getFilmCharsApi } from '../api/film';
 import { handleError } from '../api/';
@@ -28,7 +29,7 @@ const useFilmsData = props => {
       })
       .catch(err => {
         dispatch(isLoading(false));
-        handleError(err);
+        toast.error(handleError(err));
       });
   }, [props]);
 
@@ -47,7 +48,7 @@ const useFilmCharacters = (props, state, dispatch) => {
         })
         .catch(err => {
           dispatch(isLoading(false));
-          handleError(err);
+          toast.error(handleError(err));
         });
     } else {
       dispatch(getFilmChars([]));
